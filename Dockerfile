@@ -2,7 +2,7 @@ FROM alpine:3.20
 
 LABEL maintainer="fuzzy@fuzzymistborn.com"
 
-ENV NUT_VERSION 2.8.2
+ENV NUT_VERSION 2.8.5
 
 ENV UPS_NAME="ups"
 ENV UPS_DESC="UPS"

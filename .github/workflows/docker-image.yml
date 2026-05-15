@@ -7,6 +7,10 @@ on:
   release:
     types: [published]
   workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version tag to publish (e.g. 2.8.5). Leave empty for branch-only build.'
+        required: false
 
 jobs:
   docker:
@@ -18,11 +22,13 @@ jobs:
         with:
           images: fuzzymistborn/nut-upsd
           flavor: |
-            latest=${{ github.ref == 'refs/heads/master' }}
+            latest=${{ github.ref == 'refs/heads/master' || github.event_name == 'release' }}
           tags: |
             type=ref,event=branch
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}.{{minor}}
+            type=raw,value=${{ inputs.version }},enable=${{ inputs.version != '' }}
+            type=raw,value=latest,enable=${{ inputs.version != '' }}
 
       - name: Checkout
         uses: actions/checkout@v4
